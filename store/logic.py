@@ -20,6 +20,7 @@ def create_user_list(user):
         substitute = Favorite.objects.filter(user=user)[i].substitute
         pair.append(substitute)
         pairs.append(pair)
+        i += 1
     print(f"Pairs : {pairs} Pairs !")
     return pairs
 
