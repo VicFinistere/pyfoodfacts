@@ -1,1 +1,1 @@
-git web: gunicorn gofacts_project.wsgi --log-file -
+web: gunicorn mysite.wsgi --log-file -
