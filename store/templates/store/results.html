@@ -33,11 +33,10 @@ $(document).on('load', function(){$(".search").prop("disabled",false);});
                             <a class='btn btn-warning js-scroll-trigger'
                                href="{% url 'store:product_page' product_code=product_code %}#product_page">
                                 Fiche produit
-                            </a>
-                            &nbsp;
+                            </a><br><br>
                             <a class='btn btn-warning' href="https://fr.openfoodfacts.org/produit/{{product_code}}/">
                                 Fiche Open Food Fact
-                            </a>
+                            </a><br><br>
                             <a class='btn btn-warning js-scroll-trigger' href="#substitutes">▼</a>
                             {% else %}
                             <form method="get"
