@@ -34,12 +34,11 @@ $(document).on('load', function(){$(".search").prop("disabled",false);});
                                href="{% url 'store:product_page' product_code=product_code %}#product_page">
                                 Fiche produit
                             </a>
-                            <br>
+                            &nbsp;
                             <a class='btn btn-warning' href="https://fr.openfoodfacts.org/produit/{{product_code}}/">
                                 Fiche Open Food Fact
                             </a>
-                            <br>
-                            <a class='btn btn-warning js-scroll-trigger' href="#substitutes">⮟</a>
+                            <a class='btn btn-warning js-scroll-trigger' href="#substitutes">▼</a>
                             {% else %}
                             <form method="get"
                                   action="{% url 'store:search' product_code=product_code %}#substitutes"
@@ -123,9 +122,9 @@ $(document).on('load', function(){$(".search").prop("disabled",false);});
     </div>
 </section>
 {% else %}
-<section>
-    <div class="container">
-        <p><small>Cette application utilise la base de données Openfoodfacts et le framework Django !
+<section class="bg-primary">
+    <div class="container text-faded">
+        <p class="text-center"><small>Cette application utilise la base de données Openfoodfacts et le framework Django !
             <a href="https://openfoodfacts.org">( https://openfoodfacts.org )</a></small></p>
     </div>
 </section>
