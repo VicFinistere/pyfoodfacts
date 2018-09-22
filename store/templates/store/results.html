@@ -122,6 +122,13 @@ $(document).on('load', function(){$(".search").prop("disabled",false);});
         </div>
     </div>
 </section>
+{% else %}
+<section>
+    <div class="container">
+        <p><small>Cette application utilise la base de données Openfoodfacts et le framework Django !
+            <a href="https://openfoodfacts.org">( https://openfoodfacts.org )</a></small></p>
+    </div>
+</section>
 {% endif %}
 {% endblock %}
 
