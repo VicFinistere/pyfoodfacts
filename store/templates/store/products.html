@@ -85,10 +85,10 @@
             <nav aria-label="">
                 {% if pairs.has_previous %}
                 <a style="float:left;" class='btn btn-warning'
-                   href="?page={{ pairs.previous_page_number }}">Précédent</a>
+                   href="?page={{ pairs.previous_page_number }}#pairs">Précédent</a>
                 {% endif %}
                 {% if pairs.has_next %}
-                <a style="float:right;" class='btn btn-warning' href="?page={{ pairs.next_page_number }}">Suivant</a>
+                <a style="float:right;" class='btn btn-warning' href="?page={{ pairs.next_page_number }}#pairs">Suivant</a>
                 {% endif %}
             </nav>
             {% endif %}
