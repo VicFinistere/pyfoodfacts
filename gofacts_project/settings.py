@@ -136,14 +136,13 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') #DJANGOGIRLS
 
 if os.environ.get('ENV') == 'PRODUCTION':
-    SECRET_KEY = "mS6p+68'zy@9x+,Bw&]'@-J9"
 
     # Static files settings
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
-    # Extra places for collectstatic to find static files.
+    # Extra places for collectstatic to fgind static files.
     STATICFILES_DIRS = (
         os.path.join(PROJECT_ROOT, 'static'),
     )
