@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Pur Beurre">
+
+    <title>Pur Beurre</title>
+
+    {% load static %}
+
+    <link rel="shortcut icon" type="image/png"
+          href="{% static 'store/img/logo_pur_beurre.png' %}"/>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'store/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'store/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <!-- Font animations -->
+    <link rel="stylesheet" href="{% static 'store/css/font-animations.css' %}">
+
+    <!-- Carrot font -->
+    <link href="https://file.myfontastic.com/APp7oD6F8Dt6k6mpHFKhT6/icons.css" rel="stylesheet">
+
+    <!-- Plugin CSS -->
+    <link href="{% static 'store/vendor/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'store/css/creative.min.css' %}" rel="stylesheet">
+
+    <!-- Custom style -->
+    <link href="{% static 'store/css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}#page-top">
+            <span><img src="{% static 'store/img/navigation/icon.png' %}" alt="logo"></span>
+            <span>Pur Beurre</span>
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <form action="{% url 'store:search' %}" method="get" accept-charset="utf-8" class="navbar-form search" role="search">
+                  <div class="input-group">
+                    <input type="text" class="form-control text-center search" placeholder="Rechercher" name="query">
+                    <div class="input-group-btn">
+                        <button class="btn btn-warning" type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                </form>
+            </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item menu">
+              <a class="nav-link js-scroll-trigger" href="{% url 'store:profile_page'%}">
+                  <i class="fas fa-user"></i>
+                  <span>Mon compte</span>
+              </a>
+            </li>
+               <li class="nav-item menu">
+              <a class="nav-link js-scroll-trigger" href="{% url 'store:products' %}">
+                  <i class="icon-noun-carrot-29691"></i>
+                  <span>Mes produits</span>
+              </a>
+            </li>
+              <li class="nav-item menu">
+              <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Déconnexion ({{user.username}}) </span>
+              </a>
+            </li>
+              {% else %}
+              <li class="nav-item menu">
+              <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">
+                  <i class="fas fa-user"></i>
+                  <span>Connexion</span>
+              </a>
+            </li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+{% block body %}{% endblock %}
+<section style="padding:10px !important;" class="bg-dark text-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="{% url 'store:legal'%}">Mentions légales</a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="{% url 'index' %}#contact">Contact</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'store/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'store/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Plugin JavaScript -->
+<script src="{% static 'store/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'store/vendor/scrollreveal/scrollreveal.min.js' %}"></script>
+<script src="{% static 'store/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+
+<!-- Custom scripts for this template -->
+<script src="{% static 'store/js/creative.min.js' %}"></script>
+
+</body>
+
+</html>

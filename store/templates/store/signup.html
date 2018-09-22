@@ -1,0 +1,69 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>Inscription</strong>
+                </h1>
+                <hr>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-faded mb-5">
+                    Retrouvez vos informations personnelles,<br>
+                    enregistrez de nouvelles alternatives !</h2>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="bg-primary" id="connection">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto text-center text-faded ">
+                <h2 class="section-heading text-white">Entrez vos informations personnelles</h2>
+                <hr class="light my-4">
+                <p class="text-faded mb-4">
+                    Merci de nous faire confiance, <br>
+                    dans le doute n'utilisez pas forcément des mots de passe identiques pour tous les sites...<br>
+                    <small>Héhéhé on dit ça mais en principe vous devriez toujours suivre ce conseil !</small>
+                </p>
+                <form class="form-horizontal" method="post">{% csrf_token %}
+                <fieldset>
+                    <legend>{{ title }}</legend>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <div class="control-group error">
+                                <label class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }}
+                                    <span class="help-inline">
+                                        {% for error in  field.errors %}<br>{{ error }}<br>{% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="control-group">
+                                <label class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }}
+                                    {% if field.help_text %}
+                                        <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-warning" >S'inscrire</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% if profile.gender == 2 %}
+
+                <img style='max-width:100px;'
+                     class="img-responsive story_buddy"
+                     src="{% static 'store/img/portfolio/fullsize/colette.png' %}"
+                     alt="Women">
+                {% elif profile.gender == 0 %}
+
+                <img style='max-width:100px;'
+                     class="img-responsive story_buddy"
+                     src="{% static 'store/img/portfolio/fullsize/remy.png' %}"
+                     alt="Other">
+                {% else %}
+
+                <img style='max-width:100px;'
+                     class="img-responsive story_buddy"
+                     src="{% static 'store/img/portfolio/fullsize/alfredo.png' %}"
+                     alt="Men">
+                {% endif %}
+
+                <h1 class="text-uppercase">
+                    <strong>{{username}}</strong>
+                </h1>
+                <hr>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-faded mb-5">Ceci est votre page personnelle {{username}}</h2>
+                {% if user.email %}
+                <p>
+                    <small>Vous nous avez communiqué l'adresse email suivante : {{user.email}}</small>
+                </p>
+                {% else %}
+                <p>
+                    <small>Vous ne nous avez pas encore indiqué votre email !</small>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="product_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <form method="get" action="{% url 'store:update_profile' %}" accept-charset="utf-8">
+
+
+                    {% if user.email %}
+                    <input type="email" name="email" value="{{user.email}}"><br><br>
+                    {% else %}
+                    <input type="email" name="email" placeholder="Entrez votre email"><br><br>
+                    {% endif %}
+
+
+                    {% if profile.gender == 1 %}
+                    <input type="radio" name="gender" value="1" checked> ♂ Homme<br>
+                    <input type="radio" name="gender" value="2"> ♀ Femme<br>
+                    <input type="radio" name="gender" value="0"> ⚧ Autre<br><br>
+                    <button class='btn btn-warning' name='profile_user' value="{{profile_user.id}}">
+                        Modifier mes informations
+                    </button>
+
+                    {% elif profile.gender == 2 %}
+                    <input type="radio" name="gender" value="1"> ♂ Homme<br>
+                    <input type="radio" name="gender" value="2"  checked> ♀ Femme<br>
+                    <input type="radio" name="gender" value="0"> ⚧ Autre<br><br>
+                    <button class='btn btn-warning' name='profile_user' value="{{profile_user.id}}">
+                        Modifier mes informations
+                    </button>
+
+                    {% else %}
+                    <input type="radio" name="gender" value="1" checked> ♂ Homme<br>
+                    <input type="radio" name="gender" value="2">  ♀ Femme<br>
+                    <input type="radio" name="gender" value="0"  checked> ⚧ Autre<br><br>
+                    <button class='btn btn-warning' name='profile_user' value="{{profile_user.id}}">
+                        Modifier mes informations
+                    </button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+</section>
+
+{% endblock %}

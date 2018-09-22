@@ -1,0 +1,102 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>Vos produits</strong>
+                </h1>
+                <hr>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-faded mb-5">Vos produits enregistrés sont conservés ici.</h2>
+                <a class='btn btn-warning js-scroll-trigger' href="#pairs">⮟</a>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="bg-primary" id="pairs">
+    <div class="container">
+        <div class="mx-auto text-center text-faded ">
+            <h2 class="section-heading text-white">Vos produits</h2>
+            <hr class="light my-4">
+            <p class="text-faded mb-4"></p>
+            {% if pairs|length_is:"0" %}
+            <div class="text-center">
+                ...Il n'y a plus de résultats ! Remy les a peut être mangés ??! A moins que ce ne soit Colette ...
+            </div>
+            {% else %}
+            {% for pair in pairs %}
+            {% with forloop.counter as count %}
+            {% if forloop.first %}
+            <div class="row">{% endif %}
+                <div title="{{pair.1.name}} substitue ici {{pair.0.name}} ( Grade : {{ pair.0.grade|upper}})"
+                     class="col-xs-4 col-lg-4">
+                    <ol>
+                        <li style="list-style:none;">
+                            <p class="text-faded">{{pair.1.name|title|truncatewords:3}}</p>
+                            {% if pair.1.grade == "a" %}
+                            <p class="text-faded pair_grade score_a">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            {% elif pair.1.grade == "b" %}
+                            <p class="text-faded pair_grade score_b">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            {% elif pair.1.grade == "c" %}
+                            <p class="text-faded pair_grade score_c">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            {% elif pair.grade == "d" %}
+                            <p class="text-faded pair_grade score_d">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            {% else %}
+                            <p class="text-faded pair_grade score_e">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            {% endif %}
+                            <a href="{% url 'store:search' product_code=pair.0.code %}">
+                            <img style="max-width:100px;max-height:80px;"
+                                 class='tooltip_{{pair.0.grade}} substituted_result img-responsive img-rounded'
+                                 title="{{pair.0.name}}"
+                                 src={{pair.0.image}} alt='{{pair.0.name}}'></a>
+                            <a href="{% url 'store:search' product_code=pair.1.code %}">
+                                <img style="max-width:200px;max-height:120px;"
+                                     class='tooltip_{{pair.1.grade}} substitute_result img-responsive img-rounded'
+                                     title="{{pair.1.name}}"
+                                     src={{pair.1.image}} alt='{{pair.1.name}}'></a>
+                            <br>
+                            <a class='btn btn-warning'
+                               href="{% url 'store:delete' product_id=pair.0.id substitute_id=pair.1.id %}">
+                                Supprimer
+                            </a>
+
+                                <br><br>
+                        </li>
+                    </ol>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row">{% endif %}
+                {% if forloop.last %}
+            </div>
+            {% endif %}
+
+            {% endwith %}
+            {% endfor %}
+            {% endif %}
+            {% if paginate %}
+            <div class="clearfix"></div>
+            <nav aria-label="">
+                {% if pairs.has_previous %}
+                <a style="float:left;" class='btn btn-warning'
+                   href="?page={{ pairs.previous_page_number }}">Précédent</a>
+                {% endif %}
+                {% if pairs.has_next %}
+                <a style="float:right;" class='btn btn-warning' href="?page={{ pairs.next_page_number }}">Suivant</a>
+                {% endif %}
+            </nav>
+            {% endif %}
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+{% endblock %}

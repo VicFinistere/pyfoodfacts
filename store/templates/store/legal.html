@@ -1,0 +1,66 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>Mentions légales</strong>
+                    <p><small>Parce qu'il faut bien le reconnaître, la collaboration y a que ça de bon !</small></p>
+                </h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="bg-primary" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto text-center text-faded ">
+                <h2 class="section-heading text-white">Remerciements</h2>
+                <hr class="light my-4">
+                <p class="text-faded mb-4">...Hum hum..oyez oyez </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img style="width:50%;" class="img-responsive story_buddy"
+                                 src="{% static 'store/img/portfolio/fullsize/carrot.png' %}"
+                                 alt="Remy with a carrot">
+                            <br>
+                            <p><b>La carotte du Noun Project</b></p>
+                            <p>
+                                On ne pouvait tout simplement pas vous proposer ce site sans même penser une seule seconde
+                            à y ajouter ce symbole, cette douceur, ce plaisir des papilles gustatives qui me ....
+                            Oui bon je m'emballe merci au project Noun pour cette îcone de carotte !
+                            <p>Carrot by Fabien Jouin from the Noun Project"</p>
+                        </div>
+                        <div class="col-md-4">
+                            <img style="width:20%;" class="img-responsive story_buddy" src="{% static 'store/img/portfolio/fullsize/alfredo.png' %}" alt="Alfredo">
+                            <p><b>Alfredo :</b></p>
+                            <p>
+                                <small>Celui qui mine de rien est bien plus que ce qu'on peut en retenir. Il est à la fois humble
+                            et courtois. Il est gentil et il essaie d'être discret. Il est tendre...Enfin voilà quoi c'est le
+                                    premier humain qui a compris Remy et lui a permis de vivre un rêve !</small></p>
+                            <p>Alfredo !...Parceque c'est important !</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading">Oh et puis si vous en voulez encore !...</h2>
+                <hr class="my-4">
+                <p class="mb-5">Patati patata blablabla...</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

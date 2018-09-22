@@ -1,0 +1,39 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>Produit enregistré !</strong>
+                </h1>
+                <hr>
+                <form method="get"
+                      action="{% url 'store:products' %}"
+                      accept-charset="utf-8">
+                    <button class='btn btn-warning' type="submit">
+                        Consulter mes produits
+                    </button>
+                </form>
+                <br>
+                <br>
+                <form method="get"
+                      action="{% url 'store:search' product_code=product_code %}"
+                      accept-charset="utf-8">
+                    <button class='btn btn-warning' type="submit">
+                        Revenir à mon résultat
+                    </button>
+                </form>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <div title="" class="col-sm-4 mx-auto text-center"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endblock %}
+

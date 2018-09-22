@@ -1,0 +1,127 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+ {% for product in product_name %}
+{% if forloop.first %}
+<script type="text/javascript">
+$(document).on('load', function(){$(".search").prop("disabled",false);});
+</script>
+<header class="masthead text-center text-white d-flex">
+    <div id='product' class="container my-auto">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>{{product_name|title|truncatewords:3}}</strong>
+                </h1>
+                <hr>
+                </div>
+                <div class="col-lg-8 mx-auto">
+                    <div title="{{product_name|title}}" class="col-sm-4 mx-auto text-center">
+
+                        {% if product_grade %}
+                        <span class="product_grade score_{{product_grade}}">{{product_grade|upper}}</span>
+                        {% endif %}
+                        <a href="{% url 'store:product_page' product_code=product_code %}#product_page">
+                            <img style="max-width:400px;max-height:120px;"
+                                class='product_result img-responsive img-rounded js-scroll-trigger'
+                                src="{{product_image}}" title='{{product_name}}' alt='{{product_name}}'></a></span>
+                        <p class="text-faded mb-5 product_name"><small>{{category|title|truncatewords:1}}</small></p>
+                        <div class="mx-auto">
+                            {% if full_result %}
+                            <a class='btn btn-warning js-scroll-trigger'
+                               href="{% url 'store:product_page' product_code=product_code %}#product_page">
+                                Fiche produit
+                            </a>
+                            <br>
+                            <a class='btn btn-warning' href="https://fr.openfoodfacts.org/produit/{{product_code}}/">
+                                Fiche Open Food Fact
+                            </a>
+                            <br>
+                            <a class='btn btn-warning js-scroll-trigger' href="#substitutes">⮟</a>
+                            {% else %}
+                            <form method="get"
+                                  action="{% url 'store:search' product_code=product_code %}#substitutes"
+                                  accept-charset="utf-8">
+                                <button class='btn btn-warning' name='full_result' value='True' type="submit">
+                                    Voir les substituts
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+</header>
+{% if full_result %}
+<section class="bg-primary" id="substitutes">
+    <div class="container">
+        <div class="text-center text-faded ">
+            {% if substitutes %}
+                {% for substitute in substitutes %}
+                {% if forloop.first %}
+                {% if product_grade == substitute.2 %}
+                <h2 class="section-heading text-white">Dans la même catégorie</h2>
+                <p><small>A défaut de pouvoir vous proposer de meilleurs produits en voilà de même grade</small></p>
+                {% else %}
+                <h2 class="section-heading text-white">Les substituts</h2>
+                {% endif %}
+                {% endif %}
+                    {% if forloop.first %}
+                    <div class="row">
+                        {% endif %}
+                            <div class="col-xs-4 col-lg-4">
+                                <ul>
+                                    <li style="list-style:none;">
+                                        <p>{{substitute.0|title|truncatewords:3}}</p>
+                                        {% if substitute.2 == "a" %}
+                                        <p class="substitute_grade score_a">{{substitute.2|upper}}</p>
+                                        {% elif substitute.2 == "b" %}
+                                        <p class="substitute_grade score_b">{{substitute.2|upper}}</p>
+                                        {% elif substitute.2 == "c" %}
+                                        <p class="substitute_grade score_c">{{substitute.2|upper}}</p>
+                                        {% elif substitute.2 == "d" %}
+                                        <p class="substitute_grade score_d">{{substitute.2|upper}}</p>
+                                        {% else %}
+                                        <p class="substitute_grade score_e">{{substitute.2|upper}}</p>
+                                        {% endif %}
+                                        <a href="{% url 'store:product_page' product_code=substitute.1 %}">
+                                            <img style="max-width:400px;max-height:120px;" title="{{substitute.0}} (Grade : {{substitute.2}})"
+                                             class='product_result img-responsive img-rounded'
+                                                 src={{substitute.3}} alt='{{substitute.0}}'></a>
+                                        {{productè}}
+                                        <form method="get"
+                                              action="{% url 'store:save' product_code=product_code substitute_code=substitute.1 %}"
+                                              accept-charset="utf-8">
+                                            <button type="submit">
+                                                Enregistrer
+                                            </button>
+                                        </form>
+                                        <br><br>
+                                        <!--<p>{{substitute.categories}}</p>-->
+                                        <!--{{substitute.nutriments}}-->
+                                        <!--{{substitute.code}}-->
+                                    </li>
+                                </ul>
+                            </div>
+                    {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+                    {% if forloop.last %}</div>{% endif %}
+                {% endfor %}
+            {% else %}
+            <div class="text-center text-faded ">
+            <hr class="light my-4">
+            <p>Il n'y a pas de meilleurs produits que celui ci dans sa catégorie !</p>
+            </div>
+            {% endif %}
+             <a class='btn btn-warning js-scroll-trigger' href="#product">Revenir en haut</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
