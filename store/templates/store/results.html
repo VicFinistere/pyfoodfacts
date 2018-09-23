@@ -121,13 +121,13 @@
                     {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
                     {% if forloop.last %}</div>{% endif %}
                 {% endfor %}
+                 <a class='btn btn-warning js-scroll-trigger' href="#product">Revenir en haut</a>
             {% else %}
             <div class="text-center text-faded ">
             <hr class="light my-4">
             <p>Il n'y a pas de meilleurs produits que celui ci dans sa catégorie !</p>
             </div>
             {% endif %}
-             <a class='btn btn-warning js-scroll-trigger' href="#product">Revenir en haut</a>
         </div>
     </div>
 </section>
