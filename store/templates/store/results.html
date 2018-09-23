@@ -36,14 +36,27 @@
                             </a><br><br>
                             <a class='btn btn-warning js-scroll-trigger' href="#substitutes">▼</a>
                             {% else %}
-                            <form method="get"
-                                  action="{% url 'store:search' product_code=product_code %}#substitutes"
-                                  accept-charset="utf-8">
-                                <button class='btn btn-warning search_substitute' name='full_result' value='True' type="submit">
-                                    Voir les substituts
-                                </button>
-                                <label class="loading_msg">Recherche en cours...</label>
-                            </form>
+                            <a href="{% url 'store:search' product_code=product_code %}#substitutes"
+                                    style="color:black;text-decoration: none;">
+                            <button data-toggle="modal"  class='btn btn-warning' data-target="#search">
+                                      Voir les substituts
+                            </button>
+                            </a>
+                            <!-- Modal -->
+                            <div style='color:black;' class="modal fade" id='search' role="dialog">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Recherche ...</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Nous recherchons les substituts pour {{ product_name }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% endif %}
                         </div>
                     </div>

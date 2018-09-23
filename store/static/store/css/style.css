@@ -9,16 +9,6 @@
     transition: 2s;
 }
 
-.loading_msg
-{
-display:none;
-}
-
-.search_substitute:active ~ .loading_msg
-{
-display:block;
-}
-
 .carrot
 {
     font-size: 64px;

@@ -67,7 +67,7 @@ def index(request):
     return render(request, 'store/index.html', context)
 
 
-def search(request, product_code=0):
+def search(request, product_code=None):
     """
     Search product and substitutes
     :param request:
@@ -77,6 +77,9 @@ def search(request, product_code=0):
     query = request.GET.get('query')
     full_result = request.GET.get('full_result')
     product_array = logic.get_product_array(query, product_code)
+
+    if product_code is not None:
+        full_result = True
 
     if product_array is not None:
         print("Product is found in view ! (view)")
