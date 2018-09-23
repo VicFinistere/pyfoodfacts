@@ -5,9 +5,6 @@
 {% block body %}
  {% for product in product_name %}
 {% if forloop.first %}
-<script type="text/javascript">
-$(document).on('load', function(){$(".search").prop("disabled",false);});
-</script>
 <header class="masthead text-center text-white d-flex">
     <div id='product' class="container my-auto">
         <div class="row">
