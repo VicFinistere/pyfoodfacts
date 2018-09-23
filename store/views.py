@@ -1,18 +1,18 @@
 # store/views.py
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
-from django.http import Http404
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
+from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views import generic
-
 from gofacts_project import settings
 from store import logic
-from .models import Product, Profile
+from .models import Product, Favorite, Profile
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 def page_not_found_view(request, exception=None):
