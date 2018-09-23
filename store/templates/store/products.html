@@ -31,41 +31,40 @@
             </div>
             {% else %}
             {% for pair in pairs %}
-            {% with forloop.counter as count %}
+            {% with substitute=pair.1 product=pair.0 %}
             {% if forloop.first %}
             <div class="row">{% endif %}
-                <div title="{{pair.1.name}} substitue ici {{pair.0.name}} ( Grade : {{ pair.0.grade|upper}})"
+                <div title="{{substitute.name}} substitue ici {{product.name}} ( Grade : {{ product.grade|upper}})"
                      class="col-xs-4 col-lg-4">
                     <ol>
                         <li style="list-style:none;">
-                            <p class="text-faded">{{pair.1.name|title|truncatewords:3}}</p>
-                            {% if pair.1.grade == "a" %}
-                            <p class="text-faded pair_grade score_a">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
-                            {% elif pair.1.grade == "b" %}
-                            <p class="text-faded pair_grade score_b">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
-                            {% elif pair.1.grade == "c" %}
-                            <p class="text-faded pair_grade score_c">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
-                            {% elif pair.grade == "d" %}
-                            <p class="text-faded pair_grade score_d">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
+                            <p class="text-faded">{{substitute.name|title|truncatewords:3}}</p>
+                            {% if substitute.grade == "a" %}
+                            <p class="text-faded pair_grade score_a">{{product.grade|upper}}→{{substitute.grade|upper}}</p>
+                            {% elif substitute.grade == "b" %}
+                            <p class="text-faded pair_grade score_b">{{product.grade|upper}}→{{substitute.grade|upper}}</p>
+                            {% elif substitute.grade == "c" %}
+                            <p class="text-faded pair_grade score_c">{{product.grade|upper}}→{{substitute.grade|upper}}</p>
+                            {% elif substitute.grade == "d" %}
+                            <p class="text-faded pair_grade score_d">{{product.grade|upper}}→{{substitute.grade|upper}}</p>
                             {% else %}
-                            <p class="text-faded pair_grade score_e">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_e">{{product.grade|upper}}→{{substitute.grade|upper}}</p>
                             {% endif %}
-                            <a href="{% url 'store:search' product_code=pair.0.code %}">
+                            <a href="{% url 'store:search' product_code=product.code %}">
                                 <img style="max-width:100px;max-height:80px;"
-                                     class='tooltip_{{pair.0.grade}} substituted_result img-responsive img-rounded'
-                                     title="{{pair.0.name}}"
-                                     src={{pair.0.image}} alt='{{pair.0.name}}'></a>
-                            <a href="{% url 'store:search' product_code=pair.1.code %}">
+                                     class='tooltip_{{product.grade}} substituted_result img-responsive img-rounded'
+                                     title="{{product.name}}"
+                                     src={{product.image}} alt='{{product.name}}'></a>
+                            <a href="{% url 'store:search' product_code=substitute.code %}">
                                 <img style="max-width:200px;max-height:120px;"
-                                     class='tooltip_{{pair.1.grade}} substitute_result img-responsive img-rounded'
-                                     title="{{pair.1.name}}"
-                                     src={{pair.1.image}} alt='{{pair.1.name}}'></a>
+                                     class='tooltip_{{substitute.grade}} substitute_result img-responsive img-rounded'
+                                     title="{{substitute.name}}"
+                                     src={{substitute.image}} alt='{{substitute.name}}'></a>
                             <br><br>
-                            <button data-toggle="modal"  data-target="#delete">
-                                Supprimer
-                            </button>
+                            <button data-toggle="modal"  data-target=".delete{{forloop.counter}}">Supprimer</button>
+
                             <!-- Modal -->
-                            <div style='color:black;' class="modal fade" id="delete" role="dialog">
+                            <div style='color:black;' class="modal fade delete{{forloop.counter}}" role="dialog">
                                 <div class="modal-dialog modal-sm">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -73,12 +72,11 @@
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Valider la suppression du produit {{pair.0.name}} en cliquant sur
-                                                supprimer ou
-                                                fermer cette fenêtre.</p>
+                                            <p>Valider la suppression du produit {{ substitute.name }} en cliquant sur
+                                                supprimer ou fermer cette fenêtre.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="{% url 'store:delete' product_id=pair.0.id substitute_id=pair.1.id %}">
+                                            <a href="{% url 'store:delete' product_id=product.id substitute_id=substitute.id %}">
                                                 <button type="button" class="btn btn-default">Supprimer</button>
                                             </a>
                                         </div>
