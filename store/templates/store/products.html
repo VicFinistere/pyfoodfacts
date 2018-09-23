@@ -40,15 +40,15 @@
                         <li style="list-style:none;">
                             <p class="text-faded">{{pair.1.name|title|truncatewords:3}}</p>
                             {% if pair.1.grade == "a" %}
-                            <p class="text-faded pair_grade score_a">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_a">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
                             {% elif pair.1.grade == "b" %}
-                            <p class="text-faded pair_grade score_b">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_b">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
                             {% elif pair.1.grade == "c" %}
-                            <p class="text-faded pair_grade score_c">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_c">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
                             {% elif pair.grade == "d" %}
-                            <p class="text-faded pair_grade score_d">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_d">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
                             {% else %}
-                            <p class="text-faded pair_grade score_e">{{pair.0.grade|upper}}🡒{{pair.1.grade|upper}}</p>
+                            <p class="text-faded pair_grade score_e">{{pair.0.grade|upper}}→{{pair.1.grade|upper}}</p>
                             {% endif %}
                             <a href="{% url 'store:search' product_code=pair.0.code %}">
                             <img style="max-width:100px;max-height:80px;"
