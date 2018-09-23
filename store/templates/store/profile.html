@@ -59,12 +59,12 @@
 
 
                     {% if user.email %}
-                    <input type="email" class='form-control text-center' name="email" value="{{user.email}}"><br><br>
+                    <input type="email" class='form-control text-center' name="email" value="{{user.email}}"><br>
                     {% else %}
-                    <input type="email" class='form-control' name="email" placeholder="Entrez votre email"><br><br>
+                    <input type="email" class='form-control' name="email" placeholder="Entrez votre email"><br>
                     {% endif %}
 
-                    <div align='left' style="margin-left:45%;">
+                    <div align='left' style="margin-left:40%;">
                     {% if profile.gender == 1 %}
                     <input type="radio" name="gender" value="1" checked> ♂ Homme<br>
                     <input type="radio" name="gender" value="2"> ♀ Femme<br>
