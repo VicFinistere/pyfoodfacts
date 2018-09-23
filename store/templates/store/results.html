@@ -39,9 +39,10 @@
                             <form method="get"
                                   action="{% url 'store:search' product_code=product_code %}#substitutes"
                                   accept-charset="utf-8">
-                                <button class='btn btn-warning' name='full_result' value='True' type="submit">
+                                <button class='btn btn-warning search_substitute' name='full_result' value='True' type="submit">
                                     Voir les substituts
                                 </button>
+                                <label class="loading_msg">Recherche en cours...</label>
                             </form>
                             {% endif %}
                         </div>
