@@ -1,3 +1,6 @@
+"""
+This file contains all the app logic functions ( logic.py )
+"""
 import re
 import logging
 import requests
@@ -59,7 +62,7 @@ def get_products_id(product):
         return products_id
     except KeyError:
         print(f"It doesn't work with {product} (get_product:logic)")
-        logging.error(f"It doesn't work with {product} (get_product:logic)")
+        logging.error(f"It doesn't work with %s (get_product:logic)", product)
         return None
 
 
@@ -67,7 +70,7 @@ def search_product(products_id):
     """
     Search product
     :param products_id: Requested product(s)
-    :return: Product array : stored_product, stored_category, product_id, stored_grade, stored_categories
+    :return: Product array : name, code, grade, image, categories, nutriments
     """
     print(f"Getting {products_id} ...")
 
@@ -180,7 +183,7 @@ def in_database(product_id):
 
     if stored_product == 1:
         print(f"The product is already in database : {product_id} (logic)")
-        logging.info(f"The product is already in database : {product_id} (logic)")
+        logging.info(f"The product is already in database : %s (logic)", product_id)
         return Product.objects.get(code=product_id)
 
     elif stored_product > 1:
@@ -193,7 +196,7 @@ def in_database(product_id):
 
     else:
         print(f"The product will be saved : {product_id} (logic)")
-        logging.info(f"The product will be saved : {product_id} (logic)")
+        logging.info(f"The product will be saved : %s (logic)", product_id)
         return False
 
 
@@ -233,7 +236,7 @@ def pull_product(product_id, product_code=None):
     """
     page = f"https://world.openfoodfacts.org/api/v0/product/{product_id}.json"
     print(f"Pulling out product : {page} (logic)")
-    logging.info(f"Pulling out product : {page} (logic)")
+    logging.info(f"Pulling out product : %s (logic)", page)
 
     data = requests.get(page).json()
     print("We are requested the page")
@@ -371,7 +374,7 @@ def search_substitutes(category, minimal_grade, product_code):
     :return: substitutes
     """
     url = url_category_for_grade(category, minimal_grade)
-    [url, category] = try_url_redirection(url, category)
+    # [url, category] = try_url_redirection(url, category)
 
     if url is not None:
 
@@ -410,18 +413,20 @@ def fetch_substitutes(url, product_code):
 
     if products_id:
 
-        for product_id in range(len(products_id)):
-            print(f"Id du produit : {products_id[product_id]}")
-            product_array = pull_product(products_id[product_id], product_code)
+        for _, product_val in enumerate(products_id):
+            print(product_val)
+            print(product_code)
+            if product_val != product_code:
+                product_array = get_product(product_val)
 
-            if product_array:
-                print(f"We are getting subs array")
-                print(f"{product_array}")
+                if product_array:
+                    print(f"We are getting subs array")
+                    print(f"{product_array}")
 
-                substitutes.append(product_array)
+                    substitutes.append(product_array)
 
-            if len(substitutes) >= 6:
-                return substitutes
+                if len(substitutes) >= 6:
+                    return substitutes
 
         return substitutes
 
@@ -472,7 +477,7 @@ def list_categories(categories):
     :param categories:
     :return: list of categories
     """
-    if type(categories) == str:
+    if isinstance(categories, str):
         categories = categories.replace("]", "")
         categories = categories.replace("'", "")
         print(f"Categories : {categories}")
@@ -487,32 +492,13 @@ def get_category(categories):
     :return: category
     """
 
-    category = try_category_redirection(categories)
-    category_url = f"https://fr.openfoodfacts.org/category/{category}"
-    [url_for_category, category] = try_url_redirection(category_url, category)
-    print(f"This is the url for category {url_for_category}")
-    print(f"This is the category {category} (get_substitutes)")
-    return category
-
-
-def try_category_redirection(categories):
-    """
-    Try category redirection
-    :param categories:
-    :return: Url for category
-    """
-
     category = categories[-1]
     url = f"https://fr.openfoodfacts.org/category/{category}"
-
     category_url = try_url_redirection(url, category)
-
     if category_url:
         [url, category] = category_url
         print(category)
         print(url)
-
-    print(f"Searching in {category}")
     return category
 
 
