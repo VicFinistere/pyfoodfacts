@@ -24,8 +24,7 @@ def create_user_list(user):
         pair.append(substitute)
         pairs.append(pair)
         i += 1
-    # print(f"Pairs : {pairs} Pairs !")
-    # logging.info(f"Pairs : {pairs} Pairs !")
+
     return pairs
 
 
@@ -36,14 +35,17 @@ def get_product_array(query, product_code=None):
     :param product_code:
     :return:
     """
+
     if query:
-        # print(f"Searching for {query} ")
-        # logging.info(f"Searching for {query} ")
-        return search_product(query)
+        product = query
+
     elif product_code is not None:
-        return search_product(product_code)
+        product = product_code
+
     else:
         return None
+
+    return search_product(product)
 
 
 def get_products_id(product):
@@ -236,8 +238,6 @@ def pull_product(product_id, product_code=None):
     logging.info(f"Pulling out product : %s (logic)", page)
 
     data = requests.get(page).json()
-    print("We are requested the page")
-    logging.info("We are requested the page")
 
     if data:
         if data['product']:
@@ -265,6 +265,8 @@ def pull_product(product_id, product_code=None):
             except IndexError:
                 return None
 
+        else:
+            return None
     else:
         return None
 
