@@ -208,15 +208,12 @@ def get_product(product_id):
     """
     if in_database(product_id):
         product_object = Product.objects.get(code=product_id)
-        name = product_object.name
-        code = product_object.code
-        grade = product_object.grade
-        image = product_object.image
-        categories = product_object.categories
-        nutriments = product_object.nutriments
-        product_array = [name, code, grade, image, categories, nutriments]
-        return product_array
-
+        return [product_object.name,
+                product_object.code,
+                product_object.grade,
+                product_object.image,
+                product_object.categories,
+                product_object.nutriments]
     else:
         product_array = pull_product(product_id)
 
@@ -245,7 +242,6 @@ def pull_product(product_id, product_code=None):
     if data:
         if data['product']:
             product = data['product']
-            print(f"Product : {product}")
             try:
                 if product_code is not None:
                     # print("Product code is not None so we are fetching subs !")
@@ -261,20 +257,7 @@ def pull_product(product_id, product_code=None):
                     product_array = fetch_product_array(product)
 
                 if product_array is not None:
-                    categories = product_array[0]
-                    image = product_array[1]
-                    name = product_array[2]
-                    code = product_array[3]
-                    grade = product_array[4]
-                    nutriments = product_array[5]
-                    # print(f"...{categories}...")
-                    # print(f"...{image}...")
-                    # print(f"...{name}...")
-                    # print(f"...{code}...")
-                    # print(f"...{grade}...")
-                    # print(f"...{nutriments}...")
-                    # print(f"Pulling out the product ... {name} (logic)")
-                    return name, code, grade, image, categories, nutriments
+                    return product_array
 
                 else:
                     return None
