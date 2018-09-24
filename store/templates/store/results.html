@@ -103,14 +103,30 @@
                                             <img style="max-width:400px;max-height:120px;" title="{{substitute.0}} (Grade : {{substitute.2}})"
                                              class='product_result img-responsive img-rounded'
                                                  src={{substitute.3}} alt='{{substitute.0}}'></a>
-                                        {{productè}}
-                                        <form method="get"
-                                              action="{% url 'store:save' product_code=product_code substitute_code=substitute.1 %}"
-                                              accept-charset="utf-8">
-                                            <button type="submit">
-                                                Enregistrer
-                                            </button>
-                                        </form>
+                                        <br>
+                                        <button data-toggle="modal"  data-target=".save{{forloop.counter}}">
+                                            Enregistrer
+                                        </button>
+                                        <!-- Modal -->
+                                        <div style='color:black;' class="modal fade save{{forloop.counter}}" role="dialog">
+                                            <div class="modal-dialog modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Enregistrer</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Valider l'enregistrement du produit {{ substitute.0 }} en cliquant sur
+                                                            enregistrer ou fermer cette fenêtre.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="{% url 'store:save' product_code=product_code substitute_code=substitute.1 %}">
+                                                            <button type="button" class="btn btn-default">Enregistrer</button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <br><br>
                                         <!--<p>{{substitute.categories}}</p>-->
                                         <!--{{substitute.nutriments}}-->
