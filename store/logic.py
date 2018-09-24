@@ -24,7 +24,7 @@ def create_user_list(user):
         pair.append(substitute)
         pairs.append(pair)
         i += 1
-
+    print(pairs)
     return pairs
 
 
@@ -37,15 +37,11 @@ def get_product_array(query, product_code=None):
     """
 
     if query:
-        product = query
-
+        return search_product(query)
     elif product_code is not None:
-        product = product_code
-
+        return search_product(product_code)
     else:
         return None
-
-    return search_product(product)
 
 
 def get_products_id(product):
@@ -83,6 +79,7 @@ def search_product(products_id):
     while product_array is None and len(products_id) > i:
         product_array = get_product(products_id[i])
         i += 1
+    print(product_array)
     return product_array
 
 

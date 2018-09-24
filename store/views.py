@@ -129,7 +129,7 @@ def product_page(request, product_code):
     product = product_code
 
     if product:
-        product_array = logic.search_product(product_code)
+        product_array = logic.pull_product(product_code)
         print("Product is found in view ! (view)")
 
         if product_array is not None:
