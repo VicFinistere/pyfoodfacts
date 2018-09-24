@@ -342,10 +342,17 @@ def get_substitutes(categories, product_code, minimal_grade):
 
     substitutes = None
     while substitutes is None:
+
         # category = get_category(categories)
-        category = categories[-1]
+
+        if len(categories) > 1:
+            category = categories[-1]
+            categories = categories.pop()
+        else:
+            category = categories[0]
+
         substitutes = search_substitutes(category, minimal_grade, product_code)
-        categories = categories.pop()
+
     return substitutes
 
 
