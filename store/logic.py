@@ -21,7 +21,8 @@ def create_user_list(user):
         pair.append(substitute)
         pairs.append(pair)
         i += 1
-    print(f"Pairs : {pairs} Pairs !")
+    # print(f"Pairs : {pairs} Pairs !")
+    # logging.info(f"Pairs : {pairs} Pairs !")
     return pairs
 
 
@@ -33,7 +34,8 @@ def get_product_array(query, product_code=None):
     :return:
     """
     if query:
-        print(f"Searching for {query} ")
+        # print(f"Searching for {query} ")
+        # logging.info(f"Searching for {query} ")
         return search_product(query)
     elif product_code is not None:
         return search_product(product_code)
@@ -48,15 +50,16 @@ def get_products_id(product):
     :return: product id
     """
     url = f"https://fr.openfoodfacts.org/cgi/search.pl?search_terms={product}"
-    print(url)
 
     try:
         # Getting the id
         products_id = fetch_products_id(url)
-        print(products_id)
+        # print(products_id)
+        # logging.info(products_id)
         return products_id
     except KeyError:
         print(f"It doesn't work with {product} (get_product:logic)")
+        logging.error(f"It doesn't work with {product} (get_product:logic)")
         return None
 
 
@@ -68,17 +71,11 @@ def search_product(products_id):
     """
     print(f"Getting {products_id} ...")
 
-    if type(id) == int:
-        print(id)
-    else:
-        products_id = get_products_id(products_id)
-        print(products_id)
+    products_id = get_products_id(products_id)
 
     i = 0
     product_array = None
     while product_array is None and len(products_id) > i:
-        print(f"Product array : {product_array}")
-        print(f"Length after : {len(products_id) > i}")
         product_array = get_product(products_id[i])
         i += 1
     return product_array
@@ -103,19 +100,19 @@ def save_product(product_array):
     :return: bool for success
     """
 
-    [name, code, grade, image, categories, nutriments] = product_array
-
-    if Product.objects.filter(code=code).exists():
+    try:
+        Product.objects.get_or_create(
+            name=product_array[0],
+            code=product_array[1],
+            grade=product_array[2],
+            image=product_array[3],
+            categories=product_array[4],
+            nutriments=product_array[5]
+        )
         return True
-    else:
-        product = Product(name=name, image=image, categories=categories, grade=grade, nutriments=nutriments, code=code)
 
-        try:
-            product.save()
-            return True
-
-        except ValueError:
-            return False
+    except ValueError:
+        return False
 
 
 def stare_product(user, product_array, substitute_array):
@@ -135,7 +132,8 @@ def stare_product(user, product_array, substitute_array):
 
     try:
         Favorite.objects.get_or_create(user=user, product=product, substitute=substitute)
-        print("Product stared !")
+        # print("Product stared !")
+        # logging.info("Product stared !")
         return True
 
     except ValueError:
@@ -151,29 +149,24 @@ def delete_product(user, product_code, substitute_code):
     :return: bool for success
     """
 
-    print(f"Product code : {product_code}")
-    print(f"Substitute code : {substitute_code}")
-    print(user.id)
-
     user = User.objects.filter(id=user.id)
-    print(user)
+
     if user.exists():
         favorites = Favorite.objects.all()
 
         for favorite in favorites:
 
             if favorite.product.id == product_code:
-                print("True")
-
                 if favorite.substitute.id == substitute_code:
-                    print("True")
-
                     if favorite.user == user[0]:
                         print("Delete !")
+                        logging.info("Delete !")
+
                         favorite.delete()
                         return True
 
     print("Delete failed!")
+    logging.warning("Delete failed!")
     return False
 
 
@@ -183,19 +176,25 @@ def in_database(product_id):
     :param product_id: product id
     :return: product
     """
-    stored_products = Product.objects.filter(code=product_id).count()
+    stored_product = Product.objects.filter(code=product_id).count()
 
-    for stored_product in range(stored_products):
-        if stored_product > 1:
+    if stored_product == 1:
+        print(f"The product is already in database : {product_id} (logic)")
+        logging.info(f"The product is already in database : {product_id} (logic)")
+        return Product.objects.get(code=product_id)
+
+    elif stored_product > 1:
+        while stored_product > 1:
             print(f"The product seems to have more than one existence")
+            logging.warning(f"The product seems to have more than one existence")
             print("Destroy...")
-            stored_product.delete()
-        elif stored_product == 1:
-            print(f"The product is already in database : {product_id} (logic)")
-            return stored_product
-        else:
-            print(f"The product will be saved : {product_id} (logic)")
-            return False
+            Product.objects.filter(code=product_id).delete()
+        return Product.objects.get(code=product_id)
+
+    else:
+        print(f"The product will be saved : {product_id} (logic)")
+        logging.info(f"The product will be saved : {product_id} (logic)")
+        return False
 
 
 def get_product(product_id):
@@ -210,10 +209,9 @@ def get_product(product_id):
         code = product_object.code
         grade = product_object.grade
         image = product_object.image
-        category = product_object.category
         categories = product_object.categories
         nutriments = product_object.nutriments
-        product_array = [name, code, grade, image, category, categories, nutriments]
+        product_array = [name, code, grade, image, categories, nutriments]
         return product_array
 
     else:
@@ -235,23 +233,27 @@ def pull_product(product_id, product_code=None):
     """
     page = f"https://world.openfoodfacts.org/api/v0/product/{product_id}.json"
     print(f"Pulling out product : {page} (logic)")
+    logging.info(f"Pulling out product : {page} (logic)")
 
     data = requests.get(page).json()
     print("We are requested the page")
+    logging.info("We are requested the page")
 
     if data:
-        print(f"Data : {data}")
-
         if data['product']:
             product = data['product']
             print(f"Product : {product}")
             try:
                 if product_code is not None:
-                    print("Product code is not None so we are fetching subs !")
+                    # print("Product code is not None so we are fetching subs !")
+                    # logging.info("Product code is not None so we are fetching subs !")
+
                     # We are fetching substitutes
                     product_array = fetch_product_array(product, product_code)
                 else:
-                    print("Product code is None so we are fetching product !")
+                    # print("Product code is None so we are fetching product !")
+                    # logging.info("Product code is None so we are fetching product !")
+
                     # We are fetching product
                     product_array = fetch_product_array(product)
 
@@ -262,13 +264,13 @@ def pull_product(product_id, product_code=None):
                     code = product_array[3]
                     grade = product_array[4]
                     nutriments = product_array[5]
-                    print(f"...{categories}...")
-                    print(f"...{image}...")
-                    print(f"...{name}...")
-                    print(f"...{code}...")
-                    print(f"...{grade}...")
-                    print(f"...{nutriments}...")
-                    print(f"Pulling out the product ... {name} (logic)")
+                    # print(f"...{categories}...")
+                    # print(f"...{image}...")
+                    # print(f"...{name}...")
+                    # print(f"...{code}...")
+                    # print(f"...{grade}...")
+                    # print(f"...{nutriments}...")
+                    # print(f"Pulling out the product ... {name} (logic)")
                     return name, code, grade, image, categories, nutriments
 
                 else:
@@ -296,43 +298,47 @@ def fetch_product_array(product, product_code=None):
 
             if product['code'] != product_code:
                 code = product['code']
-                print(f"{code}!={product_code}")
-                print(f"Code is {code}")
+                # print(f"{code}!={product_code}")
+                # print(f"Code is {code}")
+                # logging.info(f"{code}!={product_code}")
+                # logging.info(f"Code is {code}")
             else:
-                print("This is the product we try to substitute !")
+                # logging.info("This is the product we try to substitute !")
+                # print("This is the product we try to substitute !")
                 return None
         else:
             code = product['code']
-            print(f"Code is {code}")
+            # print(f"Code is {code}")
+            # logging.info(f"Code is {code}")
 
     if 'categories_hierarchy' in product:
         categories = product['categories_hierarchy']
-        print(f"Categories are")
-        print(categories)
+        # print(f"Categories are")
+        # print(categories)
 
     if 'image_url' in product:
         image = product['image_url']
-        print(f"Image is {image}")
+        # print(f"Image is {image}")
 
     if 'product_name' in product:
         name = product['product_name']
-        print(f"Name is {name}")
+        # print(f"Name is {name}")
 
     if 'nutrition_grades' in product:
         grade = product['nutrition_grades']
-        print(f"Grade is {grade}")
+        # print(f"Grade is {grade}")
 
     if 'nutriments' in product:
         nutriments = product['nutriments']
-        print(f"Nutriments ...")
-        print(nutriments)
-        print("That was the nutriments")
 
     if categories and image and name and grade and nutriments:
         print("Fetching product array has worked !")
+        logging.info("Fetching product array has worked !")
         return [categories, image, name, code, grade, nutriments]
+
     else:
         print("Fetching product array didn't worked !")
+        logging.warning("Fetching product array didn't worked !")
         return None
 
 
@@ -344,7 +350,9 @@ def get_substitutes(categories, product_code, minimal_grade):
     :param minimal_grade: The minimal grade
     :return:
     """
-    print("get substitutes (logic)")
+    # print("get substitutes (logic)")
+    # logging.info("get substitutes (logic)")
+    categories = list_categories(categories)
 
     substitutes = None
     while substitutes is None:
@@ -375,42 +383,27 @@ def search_substitutes(category, minimal_grade, product_code):
 
         i = -1
 
-        # TEST : While conditions
-        # print(chr(98 + i))
-        # print(98 + i >= ord(minimal_grade) - 1)
-        # print(ord(minimal_grade) - 1)
-
         while substitutes is None and 5 > i and 97 + i <= ord(minimal_grade) - 1:
             i += 1
-
-            # TEST
-            # print(chr(97 + i))
-
-            print(f"Product grade : {chr(nutrition_score+i).upper()}")
-            print(f"Minimal grade : {minimal_grade.upper()}")
-            print(f"In the while loop for the {i} time (get substitutes)")
-
             url = url_category_for_grade(category, grade=chr(nutrition_score + i))
-            substitutes = fetch_substitutes(url, product_code, minimal_grade=nutrition_score + i)
+            substitutes = fetch_substitutes(url, product_code)
         return substitutes
 
     else:
         print(f"We didn't get the right URL to fetch substitutes !...")
+        logging.error(f"We didn't get the right URL to fetch substitutes !...")
         return None
 
 
-def fetch_substitutes(url, product_code, minimal_grade):
+def fetch_substitutes(url, product_code):
     """
     Fetch substitutes
     :param url: Products url
-    :param minimal_grade: Minimal grade
     :param product_code: Product code
     :return:
     """
     substitutes = []
-    minimal_grade = chr(minimal_grade)
 
-    print(f"We are searching for {minimal_grade.upper()} products")
     print(url)
     products_id = fetch_products_id(url)
     print(f"products id : {products_id}")
@@ -473,12 +466,28 @@ def try_url_redirection(url, category):
         return None
 
 
+def list_categories(categories):
+    """
+    List categories
+    :param categories:
+    :return: list of categories
+    """
+    if type(categories) == str:
+        categories = categories.replace("]", "")
+        categories = categories.replace("'", "")
+        print(f"Categories : {categories}")
+        categories = ''.join(categories).split(',')
+        print(f"Categories : {categories}")
+    return categories
+
+
 def get_category(categories):
     """
     Get the category of product
     :return: category
     """
-    category = try_category_redirection(categories[-1])
+
+    category = try_category_redirection(categories)
     category_url = f"https://fr.openfoodfacts.org/category/{category}"
     [url_for_category, category] = try_url_redirection(category_url, category)
     print(f"This is the url for category {url_for_category}")
@@ -486,25 +495,14 @@ def get_category(categories):
     return category
 
 
-def select_category(categories):
+def try_category_redirection(categories):
     """
-    Select category for template
+    Try category redirection
     :param categories:
-    :return:
+    :return: Url for category
     """
 
-    category = categories
-
-    try:
-        category = category[-1]
-        print(f"Select last category in list works {category}!")
-    except IndexError:
-        print(f"Select last category in list didn't works {category}!")
-
-    return category
-
-
-def try_category_redirection(category):
+    category = categories[-1]
     url = f"https://fr.openfoodfacts.org/category/{category}"
 
     category_url = try_url_redirection(url, category)
@@ -519,6 +517,12 @@ def try_category_redirection(category):
 
 
 def url_category_for_grade(category, grade):
+    """
+    Url category for grade
+    :param category:
+    :param grade:
+    :return:
+    """
     api_search = "https://fr.openfoodfacts.org/cgi/search.pl?action=process"
     category_as_first_filter = "&tagtype_0=categories&tag_contains_0=contains"
     grade_as_second_filter = "tagtype_1=nutrition_grades&tag_contains_1=contains"
@@ -538,7 +542,7 @@ def int_code(product_code):
     :param product_code:
     :return:
     """
-    if not type(product_code) == int:
+    if not isinstance(product_code, int):
         product_code = int(product_code)
     else:
         product_code = product_code

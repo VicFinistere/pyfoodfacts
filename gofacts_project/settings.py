@@ -32,7 +32,6 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1']
 
-# ALLOWED_HOSTS = ['127.0.0.1', '<your_username>.pythonanywhere.com'] #DJANGOGIRLS
 
 # Application definition
 INSTALLED_APPS = [
@@ -85,9 +84,9 @@ WSGI_APPLICATION = 'gofacts_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # on utilise l'adaptateur postgresql
-        'NAME': 'gofacts',  # le nom de notre base de donnees creee precedemment
-        'USER': 'postgres',  # attention : remplacez par votre nom d'utilisateur
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'gofacts',
+        'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '5432',
@@ -133,7 +132,6 @@ LOGOUT_REDIRECT_URL = 'index'
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static') #DJANGOGIRLS
 
 if os.environ.get('ENV') == 'PRODUCTION':
 

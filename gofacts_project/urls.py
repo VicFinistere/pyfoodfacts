@@ -19,8 +19,6 @@ from django.contrib import admin
 from django.urls import path
 from store import views
 
-# from django.views.generic import TemplateView
-
 handler404 = 'store.views.page_not_found_view'
 handler500 = 'store.views.server_error_view'
 

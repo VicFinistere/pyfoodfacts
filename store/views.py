@@ -94,10 +94,6 @@ def search(request, product_code=None):
         ] \
             = product_array
 
-        product_category = logic.select_category(product_categories)
-        print(f"Categories : {product_categories}")
-        print(f"Category : {product_category}")
-
         substitutes = None
         if full_result:
             print("Now for the substitutes ! (view)")
@@ -107,7 +103,6 @@ def search(request, product_code=None):
         context = {
             'query': query,
             'categories': product_categories,
-            'category': product_category,
             'product_name': product_name,
             'product_code': product_code,
             'product_grade': product_grade,
