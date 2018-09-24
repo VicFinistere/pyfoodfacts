@@ -342,7 +342,8 @@ def get_substitutes(categories, product_code, minimal_grade):
 
     substitutes = None
     while substitutes is None:
-        category = get_category(categories)
+        # category = get_category(categories)
+        category = categories[-1]
         substitutes = search_substitutes(category, minimal_grade, product_code)
         categories = categories.pop()
     return substitutes
@@ -469,21 +470,21 @@ def list_categories(categories):
     return categories
 
 
-def get_category(categories):
-    """
-    Get the category of product
-    :return: category
-    """
-
-    category = categories[-1]
-    url = f"https://fr.openfoodfacts.org/category/{category}"
-    category_url = try_url_redirection(url, category)
-    if category_url:
-        [url, category] = category_url
-        print(category)
-        print(url)
-    return category
-
+# def get_category(categories):
+#     """
+#     Get the category of product
+#     :return: category
+#     """
+#
+#     category = categories[-1]
+#     url = f"https://fr.openfoodfacts.org/category/{category}"
+#     category_url = try_url_redirection(url, category)
+#     if category_url:
+#         [url, category] = category_url
+#         print(category)
+#         print(url)
+#     return category
+#
 
 def url_category_for_grade(category, grade):
     """
