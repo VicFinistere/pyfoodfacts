@@ -470,6 +470,7 @@ def list_categories(categories):
     """
     if isinstance(categories, str):
         categories = categories.replace("]", "")
+        categories = categories.replace("[", "")
         categories = categories.replace("'", "")
         print(f"Categories : {categories}")
         categories = ''.join(categories).split(',')
