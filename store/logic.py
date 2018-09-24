@@ -320,7 +320,7 @@ def fetch_product_array(product, product_code=None):
     if categories and image and name and grade and nutriments:
         print("Fetching product array has worked !")
         logging.info("Fetching product array has worked !")
-        return [categories, image, name, code, grade, nutriments]
+        return [name, code, grade, image, categories, nutriments]
 
     else:
         print("Fetching product array didn't worked !")
