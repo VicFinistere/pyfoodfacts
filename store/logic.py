@@ -275,6 +275,7 @@ def fetch_product_array(product, product_code=None):
     :param product_code:
     :return: product array
     """
+    print(f"Prod:{product}prod!")
     categories, image, name, code, grade, nutriments = 0, 0, 0, 0, 0, 0
 
     if 'code' in product:
@@ -425,42 +426,6 @@ def fetch_substitutes(url, product_code):
         return None
 
 
-def try_url_redirection(url, category):
-    """
-    Getting URL by following the open food facts redirection
-    :return: url
-    """
-    print(f"Try url redirection")
-
-    try:
-        # Getting the id
-        req = requests.get(url)
-        if req.history:
-            print("Request was redirected")
-            if req.status_code == 200:
-                print("Status = 200")
-                url = req.url
-                category = url.rsplit('/', 1)[-1]
-                print(req.url)
-                return [req.url, category]
-
-            else:
-                print("Status != 200")
-                url = req.url
-                category = url.rsplit('/', 1)[-1]
-                print(req.url)
-                category = req.url
-                return [req.url, category]
-        else:
-            print("Request was not redirected")
-            print(url)
-            return [url, category]
-
-    except KeyError:
-        print(f"It doesn't work with {category} (get_product:logic)")
-        return None
-
-
 def list_categories(categories):
     """
     List categories
@@ -476,22 +441,6 @@ def list_categories(categories):
         print(f"Categories : {categories}")
     return categories
 
-
-# def get_category(categories):
-#     """
-#     Get the category of product
-#     :return: category
-#     """
-#
-#     category = categories[-1]
-#     url = f"https://fr.openfoodfacts.org/category/{category}"
-#     category_url = try_url_redirection(url, category)
-#     if category_url:
-#         [url, category] = category_url
-#         print(category)
-#         print(url)
-#     return category
-#
 
 def url_category_for_grade(category, grade):
     """
